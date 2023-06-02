@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{
+            width:700px;
+            height:700px;
+            background: yellow;
+            margin: auto;
+        }
+        #header{
+            width:100%;
+            height:50px;
+            text-align: center;  
+            font-size: 30px;      
+            font-weight: bold;
+        }
+        #day_title{
+            width:100%;
+            height:50px;
+            background: pink;
+            position: relative;
+        }
+        #content{
+            width: 100%;
+            height:600px;
+            background: palegreen;
+            position: relative;
+        }
+    </style>
+    <script src="./Box.js"></script>
+    <script src="./DayBox.js"></script>
+    <script src="./DateBox.js"></script>
+    <script>
+        let title; //달력제목 영역 span
+        let day_title;//요일 영역
+        let content; //날짜 영역 
+        let dayArray=["sun","mon","tue","wed","thu","fri","sat"];
+        let nowDate; //날짜 객체를 전역변수로 공유하고
+        //다음이나, 이전 버튼에 의해 날짜를 조작하여 
+        //과거, 미래를 출력하자
+
+        function createDayBox(){
+            for(let i=0;i<dayArray.length;i++){
+                //container, width, height, x, y, text, line, bg
+                new DayBox(day_title, 100,50, i*100, 0,dayArray[i], "brown", "yellow");
+            }
+        }
+        
+        function createDateBox(){
+            for(let a=0;a<6;a++){ //층
+                for(let i=0;i<dayArray.length;i++){//호
+                    //container, width, height, x, y, text, line, bg                      
+
+                    new DateBox(content, 100,100, i*100, a*100, "", "blue","skyblue");                    
+                }
+            }
+        }
+
+        //달력의 제목 출력
+        function setTitle(){
+            let year = nowDate.getFullYear();
+            let month=nowDate.getMonth();
+
+            title.innerText=year+"년 "+(month+1)+"월";
+        }
+
+        function prev(){
+            nowDate.setMonth(nowDate.getMonth()-1);
+            nowDate.setDate(1);
+            setTitle();     
+            printDateNum();       
+        }
+        //현재 공유되고 있는 전역변수인 nowDate의
+        //월 정보를 +1 증가시키고, setTitle() 호출...
+        function next(){
+            nowDate.setMonth(nowDate.getMonth()+1);
+            nowDate.setDate(1);
+            setTitle();
+            printDateNum();
+        }
+
+        /*이미 생성되어진 사각형 42개위에 현재 날짜객체인
+        nowDate를 통해 
+        1) 무슨 요일부터 1일이 시작되는가? 
+        2) 몇일까지 있는지?
+        */
+        function getLastDateOfMonth(){
+            let d = new Date(nowDate.getFullYear(), nowDate.getMonth()+1);
+            d.setDate(0); //0일로 조작
+            return d.getDate();
+        }
+
+        function printDateNum(){
+            console.log("현재는 ", nowDate.getMonth()+1, "월 ", nowDate.getDate(),"일 ", dayArray[nowDate.getDay()] );
+
+            let startDay=nowDate.getDay(); //해당월의 시작요일
+            let lastDate=getLastDateOfMonth();
+            console.log(startDay, lastDate);
+        }
+
+        function init(){
+            title = document.getElementById("title");
+            day_title = document.getElementById("day_title");
+            content = document.getElementById("content");
+
+            createDayBox();
+            createDateBox();
+
+            //현재 날짜 정보가져오기 
+            nowDate = new Date();
+            nowDate.setDate(1);
+            setTitle();
+            printDateNum();
+        }
+
+        addEventListener("load", function(){
+            init();
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="wrapper">
+            <div id="header">
+                <button onClick="prev()">◀</button>
+                <span id="title">2023년 05월</span>
+                <button onClick="next()">▶</button>
+            </div>
+            <div id="day_title">요일나올곳</div>
+            <div id="content"></div>
+        </div>
+
+    </div>    
+</body>
+</html>
