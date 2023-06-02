@@ -15,6 +15,19 @@ class Bullet extends GameObject{
 
         this.hitTest();    
 
+        //화면밖으로 나갈때 처리
+        //총알객체가 if문을 만나지 않았다는 것은 적군과 충돌하지
+        //않았다는 것이고, 이러한 총알은 화면밖으로 나갔는지여부를
+        //따져보고 제거..
+        //this.container.removeChild(this.img);//나제거
+        //let myIndex=bulletArray.indexOf(this);
+        //bulletArray.splice(myIndex , 1); //내가 소속된 배열에서 제거  
+        if(this.x >700){
+            this.container.removeChild(this.img);//나제거
+            let myIndex=bulletArray.indexOf(this);
+            bulletArray.splice(myIndex , 1); //내가 소속된 배열에서 제거  
+        }
+
     }
 
 
@@ -45,14 +58,8 @@ class Bullet extends GameObject{
 
                 break;
 
-            }else if(this.x > 700){
-                //총알객체가 if문을 만나지 않았다는 것은 적군과 충돌하지
-                //않았다는 것이고, 이러한 총알은 화면밖으로 나갔는지여부를
-                //따져보고 제거..
-                //this.container.removeChild(this.img);//나제거
-                //let myIndex=bulletArray.indexOf(this);
-                //bulletArray.splice(myIndex , 1); //내가 소속된 배열에서 제거  
             }
+            
         }
 
     }
