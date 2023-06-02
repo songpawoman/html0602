@@ -35,6 +35,7 @@ class Box{
     //처리해보자 
     setText(text){
         this.text=text;
+        this.div.innerText=this.text;//텍스트 대입 
     }
 }
 
