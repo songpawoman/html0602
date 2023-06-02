@@ -95,11 +95,17 @@
         function createEnemy(){
             //5마리의 적군 만들기 
             for(let i=0;i<enemyImg.length;i++){
-                let enemy=new Enemy(content, "../images/shooting/"+enemyImg[i], 70,65, 950, i*70, -1 , 0);
+                let enemy=new Enemy(content, "../images/shooting/"+enemyImg[i], 70,65, 950, i*95, -1 , 0);
                 
                 //적군을 배열에 담기 (담아놓아야 tick, render호출 가능)
                 enemyArray.push(enemy);
             }
+        }
+        
+        //점수를 10증가시키는 함수
+        function setScore(){
+            score+=10;
+            header.innerText=score;
         }
 
         function init(){
@@ -124,6 +130,14 @@
                 //태어난 모든 총알을 대상으로 tick(), render()호출..
                 for(let i=0;i<bulletArray.length;i++){
                     bulletArray[i].tick();
+
+                    //tick() 에서 충돌체크 시 총알과  적군을
+                    //배열에서 제거해버리면 아래의 bulletArray[i]번째
+                    //에서 존재하지 않는 요소에 대해 코드가 접근하려고
+                    //하므로, 에러가 발생한다..따라서 tick()에서 처리하지
+                    //말고, 배열을 사용하는 가장 마지막 문장인 아래의 
+                    //코드에서 충돌체크를 처리하자
+                    //결론: 배열 제거후 접근하려는 에러...
                     bulletArray[i].render();
                 }   
                 
